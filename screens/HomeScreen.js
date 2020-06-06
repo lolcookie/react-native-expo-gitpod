@@ -1,11 +1,23 @@
 import React, { useRef, useState, useEffect, Component } from "react";
-import { Animated, Dimensions, StyleSheet, Text, View } from "react-native";
 import {
-  FlingGestureHandler,
+  Animated,
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity
+} from "react-native";
+import {
+  PanGestureHandler,
   Directions,
   State
 } from "react-native-gesture-handler";
 import YoutubePlayer from "react-native-youtube-iframe";
+
+const colors = {
+    primary: '#b19cd9'
+}
 
 const windowWidth = Dimensions.get("window").width;
 const circleRadius = 30;
@@ -114,9 +126,9 @@ const Fling = () => {
   };
 
   const _onVerticalFlingHandlerStateChange = ({ nativeEvent }) => {
-      nextVideo()
+    nextVideo();
     console.log("vertical");
-    console.log(nativeEvent.absoluteY)
+    console.log(nativeEvent.State);
     // if (nativeEvent.oldState === State.ACTIVE) {
     //   Animated.spring(this._translateY, {
     //     toValue: this._translateY._value + 10,
@@ -125,48 +137,35 @@ const Fling = () => {
     // }
   };
 
-  //    selectedTime === "" ? (
-  //     <View>
-  //       <Text style={styles.title}>
-  //         The title and onPress handler are required. It is recommended to set
-  //         accessibilityLabel to help make your app usable by everyone.
-  //       </Text>
-  //       <Button
-  //         onPress={onPressLearnMore}
-  //         title="Learn More"
-  //         color="#841584"
-  //         accessibilityLabel="Learn more about this purple button"
-  //       />
-  //       <Button
-  //         onPress={onPressLearnMore}
-  //         title="Learn More"
-  //         color="#841584"
-  //         accessibilityLabel="Learn more about this purple button"
-  //       />
-  //       <Button
-  //         onPress={onPressLearnMore}
-  //         title="Learn More"
-  //         color="#841584"
-  //         accessibilityLabel="Learn more about this purple button"
-  //       />
-  //       <Button
-  //         onPress={onPressLearnMore}
-  //         title="Learn More"
-  //         color="#841584"
-  //         accessibilityLabel="Learn more about this purple button"
-  //       />
-  //       <Button
-  //         onPress={onPressLearnMore}
-  //         title="Learn More"
-  //         color="#841584"
-  //         accessibilityLabel="Learn more about this purple button"
-  //       />
-  //     </View>
-  //   ) :
-  return (
-    <FlingGestureHandler
-      direction={Directions.UP}
-      onHandlerStateChange={_onVerticalFlingHandlerStateChange}
+  const timeOptions = [
+    "10-15 Minutes",
+    "5-7 Minutes",
+    "7-10 Minutes",
+    "30 Minutes Plus",
+    "15-30 Minutes"
+  ];
+
+  return selectedTime === "" ? (
+    <View style={{ flex: 1, flexDirection: "column", padding: 16 }}>
+      <Text style={{ fontSize: 24, margin: 16 }}>
+        The title and onPress handler are required. It is recommended to set
+        accessibilityLabel to help make your app usable by everyone.
+      </Text>
+      {timeOptions.map(t => (
+        <TouchableOpacity
+          key={t}
+          style={{ margin: 16, backgroundColor: colors.primary, boxShadow: '10px 5px 5px black', borderRadius: '4px' }}
+          onPress={() => {}}
+          accessibilityLabel={`Search for ${t} videos`}
+        >
+          <Text style={{ color: "#1A1A1B", fontSize: 24 }}>{t}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  ) : (
+    <PanGestureHandler
+      minDist={20}
+      onGestureEvent={_onVerticalFlingHandlerStateChange}
     >
       <Animated.View
         style={[
@@ -193,18 +192,17 @@ const Fling = () => {
           videoId={videoIds[currentVideoIndex]}
           play={playing}
           onChangeState={event => {
-              console.log(event)
+            console.log(event);
             if (event === "playing") {
               setIsUpdating(false);
             }
             if (event === "unstarted") {
               setPlaying(true);
             }
-
           }}
           forceAndroidAutoplay
           onReady={() => {
-              setPlaying(true)
+            setPlaying(true);
           }}
           onError={e => console.log(e)}
           onPlaybackQualityChange={q => console.log(q)}
@@ -218,7 +216,7 @@ const Fling = () => {
           }}
         />
       </Animated.View>
-    </FlingGestureHandler>
+    </PanGestureHandler>
   );
 };
 
