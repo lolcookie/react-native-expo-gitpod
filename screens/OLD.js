@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Button,
   Dimensions,
   TouchableOpacity,
   View
@@ -49,18 +50,53 @@ const videoIds = [
   "hqxQRmPOMoY"
 ];
 
-const getVideoData = res => {
-  return res.data.children
-    .filter(({ data }) => data.media && data.media.type === "youtube.com")
-    .map(({ data }) => ({
-      length: data.link_flair_text,
-      video: data.secure_media_embed.content.split("/embed/")[1].split("?")[0]
-    }))[0];
+const videoWithTime = {
+  "10-15 Minutes": [
+    "hzsuYrptwKk",
+    "H6sOTBtcCcA",
+    "F3Kb9U6qFBA",
+    "oJW1aJDE-As",
+    "ZzaUGhhnlQ8",
+    "-faJzihFlXY",
+    "HpJGCrOR-RY",
+    "fY4glPsOCjA",
+    "fUJlZUCKPtA",
+    "--BYw35AnPU"
+  ],
+  "5-7 Minutes": ["b3adCMeGssg", "pN7teddPymo"],
+  "7-10 Minutes": [
+    "4n-X2Dj01AE",
+    "RYbe-35_BaA",
+    "3L2513JFJsY",
+    "8zv8kvqWLYM",
+    "HUHk5qK01-U",
+    "rMM_FUi1qhE",
+    "Rlw3KijUSmM"
+  ],
+  "30 Minutes Plus": ["v7zlZJYTkws"],
+  "15-30 Minutes": [
+    "EhnLJwmEy_k",
+    "Tj5Bgn065aY",
+    "pEVoX-RwMJw",
+    "PQejcZc4uFM",
+    "O_6G9gab_f4"
+  ]
 };
+
+// const getVideoData = res => {
+//   return R.map(R.map(R.prop('video')), R.groupBy(R.prop('length'), res.data.children
+//     .filter(({ data }) => data.media && data.media.type === "youtube.com")
+//     .map(({ data }) => ({
+//       length: data.link_flair_text,
+//       video: data.secure_media_embed.content.split("/embed/")[1].split("?")[0]
+//     }))))
+
+// };
 
 export default function HomeScreen() {
   const playerRef = useRef(null);
   const [playing, setPlaying] = useState(true);
+  const [selectedTime, setSelectedTime] = useState("");
   const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80
@@ -101,7 +137,46 @@ export default function HomeScreen() {
   //         break;
   //     }
   //   };
-  return (
+  return
+//    selectedTime === "" ? (
+//     <View>
+//       <Text style={styles.title}>
+//         The title and onPress handler are required. It is recommended to set
+//         accessibilityLabel to help make your app usable by everyone.
+//       </Text>
+//       <Button
+//         onPress={onPressLearnMore}
+//         title="Learn More"
+//         color="#841584"
+//         accessibilityLabel="Learn more about this purple button"
+//       />
+//       <Button
+//         onPress={onPressLearnMore}
+//         title="Learn More"
+//         color="#841584"
+//         accessibilityLabel="Learn more about this purple button"
+//       />
+//       <Button
+//         onPress={onPressLearnMore}
+//         title="Learn More"
+//         color="#841584"
+//         accessibilityLabel="Learn more about this purple button"
+//       />
+//       <Button
+//         onPress={onPressLearnMore}
+//         title="Learn More"
+//         color="#841584"
+//         accessibilityLabel="Learn more about this purple button"
+//       />
+//       <Button
+//         onPress={onPressLearnMore}
+//         title="Learn More"
+//         color="#841584"
+//         accessibilityLabel="Learn more about this purple button"
+//       />
+//     </View>
+//   ) : 
+  (
     <GestureRecognizer
       onSwipe={(direction, state) => {}}
       onSwipeUp={onSwipeUp}
@@ -127,7 +202,7 @@ export default function HomeScreen() {
           height={Dimensions.get("window").height}
           width={Dimensions.get("window").height * (16 / 9)}
           videoId={"AVAc1gYLZK0"}
-          play={playing}
+          play={true}
           onChangeState={event => console.log(event)}
           onReady={() => console.log("ready")}
           onError={e => console.log(e)}
@@ -135,6 +210,7 @@ export default function HomeScreen() {
           volume={50}
           playbackRate={1}
           playerParams={{
+            autoplay: true,
             cc_lang_pref: "us",
             preventFullScreen: true,
             showClosedCaptions: true
@@ -142,63 +218,6 @@ export default function HomeScreen() {
         />
       </View>
     </GestureRecognizer>
-
-    // <View style={styles.container}>
-
-    //   <ScrollView
-    //     style={styles.container}
-    //     contentContainerStyle={styles.contentContainer}
-    //   >
-    //     <View style={styles.welcomeContainer}>
-    //       <Image
-    //         source={
-    //           __DEV__
-    //             ? require("../assets/images/robot-dev.png")
-    //             : require("../assets/images/robot-prod.png")
-    //         }
-    //         style={styles.welcomeImage}
-    //       />
-    //     </View>
-
-    //     <View style={styles.getStartedContainer}>
-    //       <DevelopmentModeNotice />
-
-    //       <Text style={styles.getStartedText}>Get started by opening</Text>
-
-    //       <View
-    //         style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-    //       >
-    //         <MonoText>screens/HomeScreen.js</MonoText>
-    //       </View>
-
-    //       <Text style={styles.getStartedText}>
-    //         Change text and your app will automatically reload.
-    //       </Text>
-    //     </View>
-
-    //     <View style={styles.helpContainer}>
-    //       <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-    //         <Text style={styles.helpLinkText}>
-    //           Help, it didn’t automatically reload!
-    //         </Text>
-    //       </TouchableOpacity>
-    //     </View>
-    //   </ScrollView>
-
-    //   <View style={styles.tabBarInfoContainer}>
-    //     <Text style={styles.tabBarInfoText}>
-    //       This is a tab bar. You can edit it in:
-    //     </Text>
-
-    //     <View
-    //       style={[styles.codeHighlightContainer, styles.navigationFilename]}
-    //     >
-    //       <MonoText style={styles.codeHighlightText}>
-    //         navigation/MainTabNavigator.js
-    //       </MonoText>
-    //     </View>
-    //   </View>
-    // </View>
   );
 }
 

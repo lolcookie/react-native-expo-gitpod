@@ -34,10 +34,56 @@ const videoIds = [
   "oTE6G5MJw78",
   "hqxQRmPOMoY"
 ];
+
+const videoWithTime = {
+  "10-15 Minutes": [
+    "hzsuYrptwKk",
+    "H6sOTBtcCcA",
+    "F3Kb9U6qFBA",
+    "oJW1aJDE-As",
+    "ZzaUGhhnlQ8",
+    "-faJzihFlXY",
+    "HpJGCrOR-RY",
+    "fY4glPsOCjA",
+    "fUJlZUCKPtA",
+    "--BYw35AnPU"
+  ],
+  "5-7 Minutes": ["b3adCMeGssg", "pN7teddPymo"],
+  "7-10 Minutes": [
+    "4n-X2Dj01AE",
+    "RYbe-35_BaA",
+    "3L2513JFJsY",
+    "8zv8kvqWLYM",
+    "HUHk5qK01-U",
+    "rMM_FUi1qhE",
+    "Rlw3KijUSmM"
+  ],
+  "30 Minutes Plus": ["v7zlZJYTkws"],
+  "15-30 Minutes": [
+    "EhnLJwmEy_k",
+    "Tj5Bgn065aY",
+    "pEVoX-RwMJw",
+    "PQejcZc4uFM",
+    "O_6G9gab_f4"
+  ]
+};
+
+// const getVideoData = res => {
+//   return R.map(R.map(R.prop('video')), R.groupBy(R.prop('length'), res.data.children
+//     .filter(({ data }) => data.media && data.media.type === "youtube.com")
+//     .map(({ data }) => ({
+//       length: data.link_flair_text,
+//       video: data.secure_media_embed.content.split("/embed/")[1].split("?")[0]
+//     }))))
+
+// };
+
 const Fling = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isUpdating, setIsUpdating] = useState(true);
   const playerRef = useRef(null);
+  const [selectedTime, setSelectedTime] = useState("");
+
   const [playing, setPlaying] = useState(true);
   //   constructor(props) {
   //     super(props);
@@ -49,7 +95,7 @@ const Fling = () => {
   //     this._translateY = new Animated.Value(0);
   //   }
 
-  const nextVideo = ({ nativeEvent }) => {
+  const nextVideo = () => {
     setIsUpdating(true);
     setPlaying(false);
     console.log(isUpdating);
@@ -68,7 +114,9 @@ const Fling = () => {
   };
 
   const _onVerticalFlingHandlerStateChange = ({ nativeEvent }) => {
+      nextVideo()
     console.log("vertical");
+    console.log(nativeEvent.absoluteY)
     // if (nativeEvent.oldState === State.ACTIVE) {
     //   Animated.spring(this._translateY, {
     //     toValue: this._translateY._value + 10,
@@ -77,10 +125,48 @@ const Fling = () => {
     // }
   };
 
+  //    selectedTime === "" ? (
+  //     <View>
+  //       <Text style={styles.title}>
+  //         The title and onPress handler are required. It is recommended to set
+  //         accessibilityLabel to help make your app usable by everyone.
+  //       </Text>
+  //       <Button
+  //         onPress={onPressLearnMore}
+  //         title="Learn More"
+  //         color="#841584"
+  //         accessibilityLabel="Learn more about this purple button"
+  //       />
+  //       <Button
+  //         onPress={onPressLearnMore}
+  //         title="Learn More"
+  //         color="#841584"
+  //         accessibilityLabel="Learn more about this purple button"
+  //       />
+  //       <Button
+  //         onPress={onPressLearnMore}
+  //         title="Learn More"
+  //         color="#841584"
+  //         accessibilityLabel="Learn more about this purple button"
+  //       />
+  //       <Button
+  //         onPress={onPressLearnMore}
+  //         title="Learn More"
+  //         color="#841584"
+  //         accessibilityLabel="Learn more about this purple button"
+  //       />
+  //       <Button
+  //         onPress={onPressLearnMore}
+  //         title="Learn More"
+  //         color="#841584"
+  //         accessibilityLabel="Learn more about this purple button"
+  //       />
+  //     </View>
+  //   ) :
   return (
     <FlingGestureHandler
       direction={Directions.UP}
-      onHandlerStateChange={nextVideo}
+      onHandlerStateChange={_onVerticalFlingHandlerStateChange}
     >
       <Animated.View
         style={[
@@ -107,19 +193,25 @@ const Fling = () => {
           videoId={videoIds[currentVideoIndex]}
           play={playing}
           onChangeState={event => {
+              console.log(event)
             if (event === "playing") {
               setIsUpdating(false);
             }
             if (event === "unstarted") {
               setPlaying(true);
             }
+
           }}
-          onReady={console.log}
+          forceAndroidAutoplay
+          onReady={() => {
+              setPlaying(true)
+          }}
           onError={e => console.log(e)}
           onPlaybackQualityChange={q => console.log(q)}
           volume={50}
           playbackRate={1}
           playerParams={{
+            autoplay: 1,
             cc_lang_pref: "us",
             preventFullScreen: true,
             showClosedCaptions: true
