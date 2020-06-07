@@ -7,6 +7,27 @@ import { Ionicons } from "@expo/vector-icons";
 
 // import AppNavigator from "./navigation/AppNavigator";
 import HomeScreen from "./screens/HomeScreen";
+import VideoScreen from "./screens/VideoScreen";
+
+import { createStackNavigator, createAppContainer } from "react-navigation";
+
+const MyNavigator = createAppContainer(
+  createStackNavigator(
+    {
+      Home: {
+        screen: HomeScreen
+      },
+      Video: {
+        screen: VideoScreen
+      }
+    },
+    {
+      defaultNavigationOptions: {
+        headerMode: "none"
+      }
+    }
+  )
+);
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -22,11 +43,7 @@ export default function App(props) {
       />
     );
   } else {
-    return (
-      <View style={styles.container}>
-        <HomeScreen />
-      </View>
-    );
+    return <MyNavigator />;
   }
 }
 

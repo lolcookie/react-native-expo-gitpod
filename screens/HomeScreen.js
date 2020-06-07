@@ -16,69 +16,11 @@ import {
 import YoutubePlayer from "react-native-youtube-iframe";
 
 const colors = {
-    primary: '#b19cd9'
-}
+  primary: "#b19cd9"
+};
 
 const windowWidth = Dimensions.get("window").width;
 const circleRadius = 30;
-const videoIds = [
-  "zaD84DTGULo",
-  "yMiO6fxrEE4",
-  "uY9Yf26J4ZM",
-  "MepXqkG5ES0",
-  "7o9h0jZ9Ucc",
-  "pmtPq6j7MRc",
-  "_xmo533A8Q8",
-  "3oPBtjGlIps",
-  "TJTx9fPRIUU",
-  "bsMUKJYlFRE",
-  "Z36OznHFIt4",
-  "jkN743vlfgU",
-  "lUPGljku_kE",
-  "-fjmCk72ojU",
-  "5Cjd18b4JQ4",
-  "A5YyTHyaNpo",
-  "Gu4e61CwLaE",
-  "X6NJkWbM1xk",
-  "mqE319uNRV0",
-  "yZ63Dy6uHGc",
-  "jwFzThL9ULE",
-  "oTE6G5MJw78",
-  "hqxQRmPOMoY"
-];
-
-const videoWithTime = {
-  "10-15 Minutes": [
-    "hzsuYrptwKk",
-    "H6sOTBtcCcA",
-    "F3Kb9U6qFBA",
-    "oJW1aJDE-As",
-    "ZzaUGhhnlQ8",
-    "-faJzihFlXY",
-    "HpJGCrOR-RY",
-    "fY4glPsOCjA",
-    "fUJlZUCKPtA",
-    "--BYw35AnPU"
-  ],
-  "5-7 Minutes": ["b3adCMeGssg", "pN7teddPymo"],
-  "7-10 Minutes": [
-    "4n-X2Dj01AE",
-    "RYbe-35_BaA",
-    "3L2513JFJsY",
-    "8zv8kvqWLYM",
-    "HUHk5qK01-U",
-    "rMM_FUi1qhE",
-    "Rlw3KijUSmM"
-  ],
-  "30 Minutes Plus": ["v7zlZJYTkws"],
-  "15-30 Minutes": [
-    "EhnLJwmEy_k",
-    "Tj5Bgn065aY",
-    "pEVoX-RwMJw",
-    "PQejcZc4uFM",
-    "O_6G9gab_f4"
-  ]
-};
 
 // const getVideoData = res => {
 //   return R.map(R.map(R.prop('video')), R.groupBy(R.prop('length'), res.data.children
@@ -90,53 +32,7 @@ const videoWithTime = {
 
 // };
 
-const Fling = () => {
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [isUpdating, setIsUpdating] = useState(true);
-  const playerRef = useRef(null);
-  const [selectedTime, setSelectedTime] = useState("");
-
-  const [playing, setPlaying] = useState(true);
-  //   constructor(props) {
-  //     super(props);
-  //     this._touchX = new Animated.Value(windowWidth / 2 - circleRadius);
-  //     this._translateX = Animated.add(
-  //       this._touchX,
-  //       new Animated.Value(-circleRadius)
-  //     );
-  //     this._translateY = new Animated.Value(0);
-  //   }
-
-  const nextVideo = () => {
-    setIsUpdating(true);
-    setPlaying(false);
-    console.log(isUpdating);
-    console.log(currentVideoIndex);
-
-    if (!isUpdating) {
-      setCurrentVideoIndex(currentVideoIndex + 1);
-      console.log(currentVideoIndex);
-    }
-    // if (nativeEvent.oldState === State.ACTIVE) {
-    //   Animated.spring(this._touchX, {
-    //     toValue: this._touchX._value + offset,
-    //     useNativeDriver: false
-    //   }).start();
-    // }
-  };
-
-  const _onVerticalFlingHandlerStateChange = ({ nativeEvent }) => {
-    nextVideo();
-    console.log("vertical");
-    console.log(nativeEvent.State);
-    // if (nativeEvent.oldState === State.ACTIVE) {
-    //   Animated.spring(this._translateY, {
-    //     toValue: this._translateY._value + 10,
-    //     useNativeDriver: false
-    //   }).start();
-    // }
-  };
-
+const Home = ({ navigation }) => {
   const timeOptions = [
     "10-15 Minutes",
     "5-7 Minutes",
@@ -145,86 +41,54 @@ const Fling = () => {
     "15-30 Minutes"
   ];
 
-  return selectedTime === "" ? (
-    <View style={{ flex: 1, flexDirection: "column", padding: 16 }}>
-      <Text style={{ fontSize: 24, margin: 16 }}>
-        The title and onPress handler are required. It is recommended to set
-        accessibilityLabel to help make your app usable by everyone.
-      </Text>
-      {timeOptions.map(t => (
-        <TouchableOpacity
-          key={t}
-          style={{ margin: 16, backgroundColor: colors.primary, boxShadow: '10px 5px 5px black', borderRadius: '4px' }}
-          onPress={() => {}}
-          accessibilityLabel={`Search for ${t} videos`}
-        >
-          <Text style={{ color: "#1A1A1B", fontSize: 24 }}>{t}</Text>
-        </TouchableOpacity>
-      ))}
-    </View>
-  ) : (
-    <PanGestureHandler
-      minDist={20}
-      onGestureEvent={_onVerticalFlingHandlerStateChange}
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        backgroundColor: "black",
+        height: Dimensions.get("window").height,
+        width: Dimensions.get("window").width
+      }}
     >
-      <Animated.View
-        style={[
-          {
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "black"
-            //   transform: [
-            //     {
-            //       translateX: this._translateX
-            //     },
-            //     {
-            //       translateY: this._translateY
-            //     }
-            //   ]
-          }
-        ]}
+      <Text style={{ fontSize: 24, margin: 16, color: "white" }}>
+        Select a time that suits you, swipe up to change video
+      </Text>
+      <View
+        style={{
+          flex: 1,
+          flexWrap: "wrap",
+          padding: 16,
+          maxWidth: 700,
+          backgroundColor: "black"
+        }}
       >
-        <YoutubePlayer
-          ref={playerRef}
-          height={Dimensions.get("window").height}
-          width={Dimensions.get("window").height * (16 / 9)}
-          videoId={videoIds[currentVideoIndex]}
-          play={playing}
-          onChangeState={event => {
-            console.log(event);
-            if (event === "playing") {
-              setIsUpdating(false);
-            }
-            if (event === "unstarted") {
-              setPlaying(true);
-            }
-          }}
-          forceAndroidAutoplay
-          onReady={() => {
-            setPlaying(true);
-          }}
-          onError={e => console.log(e)}
-          onPlaybackQualityChange={q => console.log(q)}
-          volume={50}
-          playbackRate={1}
-          playerParams={{
-            autoplay: 1,
-            cc_lang_pref: "us",
-            preventFullScreen: true,
-            showClosedCaptions: true
-          }}
-        />
-      </Animated.View>
-    </PanGestureHandler>
+        {timeOptions.map(t => (
+          <TouchableOpacity
+            key={t}
+            style={{
+              margin: 16,
+              backgroundColor: colors.primary,
+              boxShadow: "10px 5px 5px black",
+              borderRadius: 4,
+              paddingHorizontal: 10,
+              paddingVertical: 10,
+              alignItems: "center"
+            }}
+            onPress={() => {
+              navigation.navigate("Video", { selectedTime: t });
+            }}
+            accessibilityLabel={`Search for ${t} videos`}
+          >
+            <Text style={{ color: "#1A1A1B", fontSize: 36 }}>{t}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
   );
 };
 
-export default class Example extends Component {
-  render() {
-    return <Fling />;
-  }
-}
+export default Home;
 
 const styles = StyleSheet.create({
   horizontalPan: {
